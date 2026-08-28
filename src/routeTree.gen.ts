@@ -10,33 +10,91 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as LennaiRouteImport } from './routes/lennai'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as RutinasRouteImport } from './routes/rutinas'
+import { Route as SeguimientoRouteImport } from './routes/seguimiento'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LennaiRoute = LennaiRouteImport.update({
+  id: '/lennai',
+  path: '/lennai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RutinasRoute = RutinasRouteImport.update({
+  id: '/rutinas',
+  path: '/rutinas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeguimientoRoute = SeguimientoRouteImport.update({
+  id: '/seguimiento',
+  path: '/seguimiento',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/lennai': typeof LennaiRoute
+  '/onboarding': typeof OnboardingRoute
+  '/rutinas': typeof RutinasRoute
+  '/seguimiento': typeof SeguimientoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/lennai': typeof LennaiRoute
+  '/onboarding': typeof OnboardingRoute
+  '/rutinas': typeof RutinasRoute
+  '/seguimiento': typeof SeguimientoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/lennai': typeof LennaiRoute
+  '/onboarding': typeof OnboardingRoute
+  '/rutinas': typeof RutinasRoute
+  '/seguimiento': typeof SeguimientoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/auth' | '/lennai' | '/onboarding' | '/rutinas' | '/seguimiento'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/auth' | '/lennai' | '/onboarding' | '/rutinas' | '/seguimiento'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/lennai'
+    | '/onboarding'
+    | '/rutinas'
+    | '/seguimiento'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  LennaiRoute: typeof LennaiRoute
+  OnboardingRoute: typeof OnboardingRoute
+  RutinasRoute: typeof RutinasRoute
+  SeguimientoRoute: typeof SeguimientoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +106,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lennai': {
+      id: '/lennai'
+      path: '/lennai'
+      fullPath: '/lennai'
+      preLoaderRoute: typeof LennaiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rutinas': {
+      id: '/rutinas'
+      path: '/rutinas'
+      fullPath: '/rutinas'
+      preLoaderRoute: typeof RutinasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seguimiento': {
+      id: '/seguimiento'
+      path: '/seguimiento'
+      fullPath: '/seguimiento'
+      preLoaderRoute: typeof SeguimientoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  LennaiRoute: LennaiRoute,
+  OnboardingRoute: OnboardingRoute,
+  RutinasRoute: RutinasRoute,
+  SeguimientoRoute: SeguimientoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
