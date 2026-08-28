@@ -14,7 +14,180 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      baby_logs: {
+        Row: {
+          amount_ml: number | null
+          created_at: string
+          detail: string | null
+          duration_minutes: number | null
+          id: string
+          kind: string
+          note: string | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_ml?: number | null
+          created_at?: string
+          detail?: string | null
+          duration_minutes?: number | null
+          id?: string
+          kind: string
+          note?: string | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_ml?: number | null
+          created_at?: string
+          detail?: string | null
+          duration_minutes?: number | null
+          id?: string
+          kind?: string
+          note?: string | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      memories: {
+        Row: {
+          body: string | null
+          created_at: string
+          happened_on: string
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          happened_on?: string
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          happened_on?: string
+          id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      milestones: {
+        Row: {
+          achieved_at: string | null
+          created_at: string
+          id: string
+          slug: string
+          user_id: string
+        }
+        Insert: {
+          achieved_at?: string | null
+          created_at?: string
+          id?: string
+          slug: string
+          user_id: string
+        }
+        Update: {
+          achieved_at?: string | null
+          created_at?: string
+          id?: string
+          slug?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      mood_checkins: {
+        Row: {
+          created_at: string
+          id: string
+          mood: string
+          note: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mood: string
+          note?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mood?: string
+          note?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          baby_birth_date: string | null
+          baby_name: string | null
+          created_at: string
+          feeding_type: string | null
+          id: string
+          is_premium: boolean
+          mom_name: string | null
+          onboarded: boolean
+          preferences: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          baby_birth_date?: string | null
+          baby_name?: string | null
+          created_at?: string
+          feeding_type?: string | null
+          id: string
+          is_premium?: boolean
+          mom_name?: string | null
+          onboarded?: boolean
+          preferences?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          baby_birth_date?: string | null
+          baby_name?: string | null
+          created_at?: string
+          feeding_type?: string | null
+          id?: string
+          is_premium?: boolean
+          mom_name?: string | null
+          onboarded?: boolean
+          preferences?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
