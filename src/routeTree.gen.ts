@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ContenidoRouteImport } from './routes/contenido'
 import { Route as LennaiRouteImport } from './routes/lennai'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as ParaMamaRouteImport } from './routes/para-mama'
+import { Route as RecuerdosRouteImport } from './routes/recuerdos'
 import { Route as RutinasRouteImport } from './routes/rutinas'
 import { Route as SeguimientoRouteImport } from './routes/seguimiento'
 
@@ -26,6 +29,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContenidoRoute = ContenidoRouteImport.update({
+  id: '/contenido',
+  path: '/contenido',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LennaiRoute = LennaiRouteImport.update({
   id: '/lennai',
   path: '/lennai',
@@ -34,6 +42,16 @@ const LennaiRoute = LennaiRouteImport.update({
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParaMamaRoute = ParaMamaRouteImport.update({
+  id: '/para-mama',
+  path: '/para-mama',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecuerdosRoute = RecuerdosRouteImport.update({
+  id: '/recuerdos',
+  path: '/recuerdos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RutinasRoute = RutinasRouteImport.update({
@@ -50,16 +68,22 @@ const SeguimientoRoute = SeguimientoRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/contenido': typeof ContenidoRoute
   '/lennai': typeof LennaiRoute
   '/onboarding': typeof OnboardingRoute
+  '/para-mama': typeof ParaMamaRoute
+  '/recuerdos': typeof RecuerdosRoute
   '/rutinas': typeof RutinasRoute
   '/seguimiento': typeof SeguimientoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/contenido': typeof ContenidoRoute
   '/lennai': typeof LennaiRoute
   '/onboarding': typeof OnboardingRoute
+  '/para-mama': typeof ParaMamaRoute
+  '/recuerdos': typeof RecuerdosRoute
   '/rutinas': typeof RutinasRoute
   '/seguimiento': typeof SeguimientoRoute
 }
@@ -67,23 +91,46 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/contenido': typeof ContenidoRoute
   '/lennai': typeof LennaiRoute
   '/onboarding': typeof OnboardingRoute
+  '/para-mama': typeof ParaMamaRoute
+  '/recuerdos': typeof RecuerdosRoute
   '/rutinas': typeof RutinasRoute
   '/seguimiento': typeof SeguimientoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/lennai' | '/onboarding' | '/rutinas' | '/seguimiento'
+    | '/'
+    | '/auth'
+    | '/contenido'
+    | '/lennai'
+    | '/onboarding'
+    | '/para-mama'
+    | '/recuerdos'
+    | '/rutinas'
+    | '/seguimiento'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/lennai' | '/onboarding' | '/rutinas' | '/seguimiento'
+  to:
+    | '/'
+    | '/auth'
+    | '/contenido'
+    | '/lennai'
+    | '/onboarding'
+    | '/para-mama'
+    | '/recuerdos'
+    | '/rutinas'
+    | '/seguimiento'
   id:
     | '__root__'
     | '/'
     | '/auth'
+    | '/contenido'
     | '/lennai'
     | '/onboarding'
+    | '/para-mama'
+    | '/recuerdos'
     | '/rutinas'
     | '/seguimiento'
   fileRoutesById: FileRoutesById
@@ -91,8 +138,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  ContenidoRoute: typeof ContenidoRoute
   LennaiRoute: typeof LennaiRoute
   OnboardingRoute: typeof OnboardingRoute
+  ParaMamaRoute: typeof ParaMamaRoute
+  RecuerdosRoute: typeof RecuerdosRoute
   RutinasRoute: typeof RutinasRoute
   SeguimientoRoute: typeof SeguimientoRoute
 }
@@ -113,6 +163,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contenido': {
+      id: '/contenido'
+      path: '/contenido'
+      fullPath: '/contenido'
+      preLoaderRoute: typeof ContenidoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lennai': {
       id: '/lennai'
       path: '/lennai'
@@ -125,6 +182,20 @@ declare module '@tanstack/react-router' {
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/para-mama': {
+      id: '/para-mama'
+      path: '/para-mama'
+      fullPath: '/para-mama'
+      preLoaderRoute: typeof ParaMamaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recuerdos': {
+      id: '/recuerdos'
+      path: '/recuerdos'
+      fullPath: '/recuerdos'
+      preLoaderRoute: typeof RecuerdosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/rutinas': {
@@ -147,8 +218,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  ContenidoRoute: ContenidoRoute,
   LennaiRoute: LennaiRoute,
   OnboardingRoute: OnboardingRoute,
+  ParaMamaRoute: ParaMamaRoute,
+  RecuerdosRoute: RecuerdosRoute,
   RutinasRoute: RutinasRoute,
   SeguimientoRoute: SeguimientoRoute,
 }
