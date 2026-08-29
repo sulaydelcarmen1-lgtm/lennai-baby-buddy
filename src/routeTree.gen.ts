@@ -15,6 +15,8 @@ import { Route as ContenidoRouteImport } from './routes/contenido'
 import { Route as LennaiRouteImport } from './routes/lennai'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ParaMamaRouteImport } from './routes/para-mama'
+import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as PremiumRouteImport } from './routes/premium'
 import { Route as RecuerdosRouteImport } from './routes/recuerdos'
 import { Route as RutinasRouteImport } from './routes/rutinas'
 import { Route as SeguimientoRouteImport } from './routes/seguimiento'
@@ -49,6 +51,16 @@ const ParaMamaRoute = ParaMamaRouteImport.update({
   path: '/para-mama',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PerfilRoute = PerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PremiumRoute = PremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecuerdosRoute = RecuerdosRouteImport.update({
   id: '/recuerdos',
   path: '/recuerdos',
@@ -72,6 +84,8 @@ export interface FileRoutesByFullPath {
   '/lennai': typeof LennaiRoute
   '/onboarding': typeof OnboardingRoute
   '/para-mama': typeof ParaMamaRoute
+  '/perfil': typeof PerfilRoute
+  '/premium': typeof PremiumRoute
   '/recuerdos': typeof RecuerdosRoute
   '/rutinas': typeof RutinasRoute
   '/seguimiento': typeof SeguimientoRoute
@@ -83,6 +97,8 @@ export interface FileRoutesByTo {
   '/lennai': typeof LennaiRoute
   '/onboarding': typeof OnboardingRoute
   '/para-mama': typeof ParaMamaRoute
+  '/perfil': typeof PerfilRoute
+  '/premium': typeof PremiumRoute
   '/recuerdos': typeof RecuerdosRoute
   '/rutinas': typeof RutinasRoute
   '/seguimiento': typeof SeguimientoRoute
@@ -95,6 +111,8 @@ export interface FileRoutesById {
   '/lennai': typeof LennaiRoute
   '/onboarding': typeof OnboardingRoute
   '/para-mama': typeof ParaMamaRoute
+  '/perfil': typeof PerfilRoute
+  '/premium': typeof PremiumRoute
   '/recuerdos': typeof RecuerdosRoute
   '/rutinas': typeof RutinasRoute
   '/seguimiento': typeof SeguimientoRoute
@@ -108,6 +126,8 @@ export interface FileRouteTypes {
     | '/lennai'
     | '/onboarding'
     | '/para-mama'
+    | '/perfil'
+    | '/premium'
     | '/recuerdos'
     | '/rutinas'
     | '/seguimiento'
@@ -119,6 +139,8 @@ export interface FileRouteTypes {
     | '/lennai'
     | '/onboarding'
     | '/para-mama'
+    | '/perfil'
+    | '/premium'
     | '/recuerdos'
     | '/rutinas'
     | '/seguimiento'
@@ -130,6 +152,8 @@ export interface FileRouteTypes {
     | '/lennai'
     | '/onboarding'
     | '/para-mama'
+    | '/perfil'
+    | '/premium'
     | '/recuerdos'
     | '/rutinas'
     | '/seguimiento'
@@ -142,6 +166,8 @@ export interface RootRouteChildren {
   LennaiRoute: typeof LennaiRoute
   OnboardingRoute: typeof OnboardingRoute
   ParaMamaRoute: typeof ParaMamaRoute
+  PerfilRoute: typeof PerfilRoute
+  PremiumRoute: typeof PremiumRoute
   RecuerdosRoute: typeof RecuerdosRoute
   RutinasRoute: typeof RutinasRoute
   SeguimientoRoute: typeof SeguimientoRoute
@@ -191,6 +217,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ParaMamaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/perfil': {
+      id: '/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/premium': {
+      id: '/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof PremiumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/recuerdos': {
       id: '/recuerdos'
       path: '/recuerdos'
@@ -222,6 +262,8 @@ const rootRouteChildren: RootRouteChildren = {
   LennaiRoute: LennaiRoute,
   OnboardingRoute: OnboardingRoute,
   ParaMamaRoute: ParaMamaRoute,
+  PerfilRoute: PerfilRoute,
+  PremiumRoute: PremiumRoute,
   RecuerdosRoute: RecuerdosRoute,
   RutinasRoute: RutinasRoute,
   SeguimientoRoute: SeguimientoRoute,
