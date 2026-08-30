@@ -18,6 +18,7 @@ import { Route as ParaMamaRouteImport } from './routes/para-mama'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PremiumRouteImport } from './routes/premium'
 import { Route as RecuerdosRouteImport } from './routes/recuerdos'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RutinasRouteImport } from './routes/rutinas'
 import { Route as SeguimientoRouteImport } from './routes/seguimiento'
 
@@ -66,6 +67,11 @@ const RecuerdosRoute = RecuerdosRouteImport.update({
   path: '/recuerdos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RutinasRoute = RutinasRouteImport.update({
   id: '/rutinas',
   path: '/rutinas',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/perfil': typeof PerfilRoute
   '/premium': typeof PremiumRoute
   '/recuerdos': typeof RecuerdosRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/rutinas': typeof RutinasRoute
   '/seguimiento': typeof SeguimientoRoute
 }
@@ -100,6 +107,7 @@ export interface FileRoutesByTo {
   '/perfil': typeof PerfilRoute
   '/premium': typeof PremiumRoute
   '/recuerdos': typeof RecuerdosRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/rutinas': typeof RutinasRoute
   '/seguimiento': typeof SeguimientoRoute
 }
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/perfil': typeof PerfilRoute
   '/premium': typeof PremiumRoute
   '/recuerdos': typeof RecuerdosRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/rutinas': typeof RutinasRoute
   '/seguimiento': typeof SeguimientoRoute
 }
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/premium'
     | '/recuerdos'
+    | '/reset-password'
     | '/rutinas'
     | '/seguimiento'
   fileRoutesByTo: FileRoutesByTo
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/premium'
     | '/recuerdos'
+    | '/reset-password'
     | '/rutinas'
     | '/seguimiento'
   id:
@@ -155,6 +166,7 @@ export interface FileRouteTypes {
     | '/perfil'
     | '/premium'
     | '/recuerdos'
+    | '/reset-password'
     | '/rutinas'
     | '/seguimiento'
   fileRoutesById: FileRoutesById
@@ -169,6 +181,7 @@ export interface RootRouteChildren {
   PerfilRoute: typeof PerfilRoute
   PremiumRoute: typeof PremiumRoute
   RecuerdosRoute: typeof RecuerdosRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   RutinasRoute: typeof RutinasRoute
   SeguimientoRoute: typeof SeguimientoRoute
 }
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecuerdosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rutinas': {
       id: '/rutinas'
       path: '/rutinas'
@@ -265,6 +285,7 @@ const rootRouteChildren: RootRouteChildren = {
   PerfilRoute: PerfilRoute,
   PremiumRoute: PremiumRoute,
   RecuerdosRoute: RecuerdosRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   RutinasRoute: RutinasRoute,
   SeguimientoRoute: SeguimientoRoute,
 }
