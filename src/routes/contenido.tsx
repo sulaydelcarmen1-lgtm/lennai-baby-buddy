@@ -56,7 +56,7 @@ function Contenido() {
               stageId === s.id ? "bg-primary-gradient text-primary-foreground" : "bg-muted text-muted-foreground"
             }`}
           >
-            {s.title.split("(")[0].trim()}
+            {s.title.split("(")[0]?.trim()}
           </button>
         ))}
       </div>
