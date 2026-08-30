@@ -85,17 +85,29 @@ function AuthPage() {
 
   async function handleGoogle() {
     setBusy(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
-    });
-    if (result.error) {
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) {
+        toast.error("No se pudo entrar con Google. Intenta de nuevo.");
+        setBusy(false);
+        return;
+      }
+      if (result.redirected) return;
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        toast.error("No se pudo abrir la ventana de Google. Revisa los bloqueadores de ventanas.");
+        setBusy(false);
+        return;
+      }
+      navigate({ to: "/" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "No se pudo entrar con Google");
       setBusy(false);
-      toast.error("No se pudo entrar con Google");
-      return;
     }
-    if (result.redirected) return;
-    navigate({ to: "/" });
   }
+
 
   return (
     <div className="relative min-h-screen bg-hero-gradient px-5 pb-10 pt-14">
