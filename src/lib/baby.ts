@@ -92,7 +92,7 @@ export const stages: AgeStage[] = [
 
 export function stageFor(months: number | null | undefined): AgeStage {
   const m = months ?? 0;
-  return stages.find((s) => m >= s.min && m <= s.max) ?? stages[stages.length - 1];
+  return stages.find((s) => m >= s.min && m <= s.max) ?? stages[stages.length - 1]!;
 }
 
 export type Article = {
