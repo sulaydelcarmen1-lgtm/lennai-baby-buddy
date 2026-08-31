@@ -21,7 +21,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let authEventReceived = false;
     const { data: sub } = supabase.auth.onAuthStateChange((_event, next) => {
+      authEventReceived = true;
       setSession(next);
       setLoading(false);
     });
@@ -30,10 +32,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth
       .getSession()
       .then(({ data }) => {
-        if (active) setSession(data.session);
+        if (active && !authEventReceived) setSession(data.session);
       })
       .catch(() => {
-        if (active) setSession(null);
+        if (active && !authEventReceived) setSession(null);
       })
       .finally(() => {
         if (active) setLoading(false);
