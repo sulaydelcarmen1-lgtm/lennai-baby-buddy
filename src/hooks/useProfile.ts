@@ -19,16 +19,17 @@ export function useProfile() {
     queryKey: ["profile", user?.id],
     enabled: !!user,
     queryFn: async (): Promise<Profile | null> => {
+      if (!user) return null;
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", user!.id)
+        .eq("id", user.id)
         .maybeSingle();
       if (error) throw error;
       if (data) return data as Profile;
       const { data: created, error: insertError } = await supabase
         .from("profiles")
-        .insert({ id: user!.id })
+        .insert({ id: user.id })
         .select("*")
         .single();
       if (insertError) throw insertError;
