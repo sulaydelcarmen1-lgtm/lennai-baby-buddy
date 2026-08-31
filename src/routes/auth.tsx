@@ -1,12 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Chrome, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { CloudDecor } from "@/components/Decor";
 import { WhatsAppSupport } from "@/components/WhatsAppSupport";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -32,19 +33,35 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [momName, setMomName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
   const { session } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (session) navigate({ to: "/" });
+    if (session) navigate({ to: "/", replace: true });
   }, [session, navigate]);
+
+  function friendlyAuthError(message: string) {
+    const normalized = message.toLowerCase();
+    if (normalized.includes("invalid login credentials")) {
+      return "El correo o la contraseña no coinciden. Si creaste tu cuenta con Google, entra con Google; si no recuerdas tu contraseña, puedes restablecerla.";
+    }
+    if (normalized.includes("email not confirmed")) {
+      return "Tu correo todavía no está confirmado. Revisa tu bandeja de entrada o restablece tu contraseña.";
+    }
+    if (normalized.includes("already registered")) {
+      return "Ese correo ya tiene una cuenta. Cambia a “Iniciar sesión” o entra con Google.";
+    }
+    return message;
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
+    setStatus(null);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -53,14 +70,23 @@ function AuthPage() {
           },
         });
         if (error) throw error;
+        if (!data.session) {
+          setStatus("Tu cuenta fue creada. Revisa tu correo para confirmarla y luego inicia sesión.");
+          toast.success("Cuenta creada. Revisa tu correo 💌");
+          setMode("login");
+          return;
+        }
         toast.success("¡Bienvenida a LennAI! 💕");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        if (!data.session) throw new Error("No se pudo crear una sesión. Intenta de nuevo.");
         toast.success("Qué bueno verte de nuevo 🌸");
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Algo no salió bien");
+      const message = friendlyAuthError(err instanceof Error ? err.message : "Algo no salió bien");
+      setStatus(message);
+      toast.error(message);
     } finally {
       setBusy(false);
     }
@@ -85,25 +111,27 @@ function AuthPage() {
 
   async function handleGoogle() {
     setBusy(true);
+    setStatus("Abriendo Google de forma segura…");
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: window.location.origin,
+        extraParams: { prompt: "select_account" },
       });
       if (result.error) {
-        toast.error("No se pudo entrar con Google. Intenta de nuevo.");
-        setBusy(false);
+        const message = friendlyAuthError(result.error.message);
+        setStatus(message);
+        toast.error(message);
         return;
       }
       if (result.redirected) return;
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) {
-        toast.error("No se pudo abrir la ventana de Google. Revisa los bloqueadores de ventanas.");
-        setBusy(false);
-        return;
-      }
-      navigate({ to: "/" });
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data.user) throw error ?? new Error("Google no pudo completar la sesión.");
+      toast.success("¡Bienvenida a LennAI! 💕");
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "No se pudo entrar con Google");
+      const message = err instanceof Error ? err.message : "No se pudo entrar con Google";
+      setStatus(message);
+      toast.error(message);
+    } finally {
       setBusy(false);
     }
   }
@@ -180,15 +208,21 @@ function AuthPage() {
                 className="mt-1 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
               />
             </label>
-            <button
+            <Button
               type="submit"
               disabled={busy}
-              className="mt-2 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary-gradient px-4 py-3.5 text-sm font-bold text-primary-foreground shadow-soft transition-transform active:scale-95 disabled:opacity-60"
+              className="mt-2 h-auto w-full rounded-2xl bg-primary-gradient px-4 py-3.5 font-bold shadow-soft active:scale-95"
             >
               {busy && <Loader2 className="h-4 w-4 animate-spin" />}
               {mode === "signup" ? "Crear mi cuenta" : "Entrar"}
-            </button>
+            </Button>
           </form>
+
+          {status && (
+            <p role="status" className="mt-3 rounded-2xl bg-muted px-3 py-2.5 text-center text-xs text-muted-foreground">
+              {status}
+            </p>
+          )}
 
           {mode === "login" && (
             <button
@@ -205,14 +239,16 @@ function AuthPage() {
             <span className="h-px flex-1 bg-border" />o<span className="h-px flex-1 bg-border" />
           </div>
 
-          <button
+          <Button
             type="button"
+            variant="outline"
             onClick={handleGoogle}
             disabled={busy}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-input bg-background px-4 py-3 text-sm font-semibold transition-transform active:scale-95 disabled:opacity-60"
+            className="h-auto w-full rounded-2xl px-4 py-3 font-semibold active:scale-95"
           >
+            {busy ? <Loader2 className="animate-spin" /> : <Chrome />}
             Continuar con Google
-          </button>
+          </Button>
         </div>
 
         <div className="mt-5">
