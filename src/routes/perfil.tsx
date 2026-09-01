@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { BookHeart, CalendarClock, Crown, HeartHandshake, LogOut } from "lucide-react";
+import { BookHeart, CalendarClock, Crown, HeartHandshake, KeyRound, LogOut } from "lucide-react";
 import { AppShell, PageHeader } from "@/components/AppShell";
 import { WhatsAppSupport } from "@/components/WhatsAppSupport";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
 import { getBabyAge } from "@/lib/baby";
 
