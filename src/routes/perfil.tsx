@@ -153,6 +153,7 @@ function Perfil() {
         <NavRow to="/rutinas" icon={<CalendarClock className="h-4 w-4" />} label="Rutinas diarias" hint="Generador por edad" />
         <NavRow to="/recuerdos" icon={<BookHeart className="h-4 w-4" />} label="Diario de recuerdos" hint="Tus momentos guardados" />
         <NavRow to="/para-mama" icon={<HeartHandshake className="h-4 w-4" />} label="Para mamá" hint="Motivación y check-in" />
+        <ResetPasswordRow email={user?.email ?? ""} />
       </section>
 
       <div className="mt-4">
