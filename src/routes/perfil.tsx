@@ -174,6 +174,45 @@ function Perfil() {
   );
 }
 
+function ResetPasswordRow({ email }: { email: string }) {
+  const [busy, setBusy] = useState(false);
+
+  async function sendReset() {
+    if (!email) {
+      toast.error("No hay un correo asociado a esta sesión");
+      return;
+    }
+    setBusy(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setBusy(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Te enviamos un correo para restablecer tu contraseña 💌");
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={sendReset}
+      disabled={busy}
+      className="card-soft flex w-full items-center gap-3 p-3.5 text-left disabled:opacity-60"
+    >
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-sky text-sky-foreground">
+        <KeyRound className="h-4 w-4" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-bold">Restablecer contraseña</span>
+        <span className="block text-xs text-muted-foreground">Te enviaremos un correo con el enlace</span>
+      </span>
+      <span className="shrink-0 text-muted-foreground">›</span>
+    </button>
+  );
+}
+
 function NavRow({
   to,
   icon,
