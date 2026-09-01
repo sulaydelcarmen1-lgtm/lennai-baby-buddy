@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { BookHeart, CalendarClock, Crown, HeartHandshake, LogOut } from "lucide-react";
+import { BookHeart, CalendarClock, Crown, HeartHandshake, KeyRound, LogOut } from "lucide-react";
 import { AppShell, PageHeader } from "@/components/AppShell";
 import { WhatsAppSupport } from "@/components/WhatsAppSupport";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { useProfile, useUpdateProfile } from "@/hooks/useProfile";
 import { getBabyAge } from "@/lib/baby";
 
@@ -152,6 +153,7 @@ function Perfil() {
         <NavRow to="/rutinas" icon={<CalendarClock className="h-4 w-4" />} label="Rutinas diarias" hint="Generador por edad" />
         <NavRow to="/recuerdos" icon={<BookHeart className="h-4 w-4" />} label="Diario de recuerdos" hint="Tus momentos guardados" />
         <NavRow to="/para-mama" icon={<HeartHandshake className="h-4 w-4" />} label="Para mamá" hint="Motivación y check-in" />
+        <ResetPasswordRow email={user?.email ?? ""} />
       </section>
 
       <div className="mt-4">
@@ -169,6 +171,45 @@ function Perfil() {
         <LogOut className="h-4 w-4" /> Cerrar sesión
       </button>
     </div>
+  );
+}
+
+function ResetPasswordRow({ email }: { email: string }) {
+  const [busy, setBusy] = useState(false);
+
+  async function sendReset() {
+    if (!email) {
+      toast.error("No hay un correo asociado a esta sesión");
+      return;
+    }
+    setBusy(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setBusy(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Te enviamos un correo para restablecer tu contraseña 💌");
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={sendReset}
+      disabled={busy}
+      className="card-soft flex w-full items-center gap-3 p-3.5 text-left disabled:opacity-60"
+    >
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-sky text-sky-foreground">
+        <KeyRound className="h-4 w-4" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm font-bold">Restablecer contraseña</span>
+        <span className="block text-xs text-muted-foreground">Te enviaremos un correo con el enlace</span>
+      </span>
+      <span className="shrink-0 text-muted-foreground">›</span>
+    </button>
   );
 }
 
