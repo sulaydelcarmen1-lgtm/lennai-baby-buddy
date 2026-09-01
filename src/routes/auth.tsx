@@ -77,11 +77,13 @@ function AuthPage() {
           return;
         }
         toast.success("¡Bienvenida a LennAI! 💕");
+        navigate({ to: "/", replace: true });
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         if (!data.session) throw new Error("No se pudo crear una sesión. Intenta de nuevo.");
         toast.success("Qué bueno verte de nuevo 🌸");
+        navigate({ to: "/", replace: true });
       }
     } catch (err) {
       const message = friendlyAuthError(err instanceof Error ? err.message : "Algo no salió bien");
@@ -127,6 +129,7 @@ function AuthPage() {
       const { data, error } = await supabase.auth.getUser();
       if (error || !data.user) throw error ?? new Error("Google no pudo completar la sesión.");
       toast.success("¡Bienvenida a LennAI! 💕");
+      navigate({ to: "/", replace: true });
     } catch (err) {
       const message = err instanceof Error ? err.message : "No se pudo entrar con Google";
       setStatus(message);
