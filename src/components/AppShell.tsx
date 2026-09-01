@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
-import { Baby, BookHeart, Home, Sparkles, User } from "lucide-react";
+import { AlertCircle, Baby, BookHeart, Home, Sparkles, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const navItems = [
   { to: "/", label: "Inicio", icon: Home },
@@ -59,7 +60,7 @@ export function AppShell({
 }) {
   const { session, loading } = useAuth();
   const navigate = useNavigate();
-  const { data: profile, isPending } = useProfile();
+  const { data: profile, isPending, isError, refetch } = useProfile();
 
   useEffect(() => {
     if (!loading && !session) navigate({ to: "/auth" });
@@ -81,6 +82,23 @@ export function AppShell({
   }
 
   if (!session) return null;
+
+  if (isError) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-background px-5">
+        <div className="max-w-sm text-center">
+          <AlertCircle className="mx-auto h-8 w-8 text-destructive" />
+          <h1 className="mt-3 text-xl font-bold">No pudimos cargar tu espacio</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Tu sesión está activa. Intenta cargar tus datos nuevamente.
+          </p>
+          <Button className="mt-4 rounded-2xl" onClick={() => void refetch()}>
+            Intentar de nuevo
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

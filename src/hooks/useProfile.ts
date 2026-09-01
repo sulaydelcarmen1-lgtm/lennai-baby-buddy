@@ -29,7 +29,7 @@ export function useProfile() {
       if (data) return data as Profile;
       const { data: created, error: insertError } = await supabase
         .from("profiles")
-        .insert({ id: user.id })
+        .upsert({ id: user.id }, { onConflict: "id" })
         .select("*")
         .single();
       if (insertError) throw insertError;
