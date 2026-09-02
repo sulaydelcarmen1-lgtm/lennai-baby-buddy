@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { BookHeart, CalendarClock, Crown, HeartHandshake, KeyRound, LogOut } from "lucide-react";
+import { BookHeart, CalendarClock, Crown, HeartHandshake, KeyRound, Loader2, LogOut } from "lucide-react";
 import { AppShell, PageHeader } from "@/components/AppShell";
 import { WhatsAppSupport } from "@/components/WhatsAppSupport";
 import { useAuth } from "@/hooks/useAuth";
