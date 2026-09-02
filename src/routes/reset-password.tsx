@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,6 +24,12 @@ export const Route = createFileRoute("/reset-password")({
   }),
   component: ResetPasswordPage,
 });
+
+function hasRecoveryHash() {
+  if (typeof window === "undefined") return false;
+  return window.location.hash.includes("type=recovery");
+}
+
 
 function ResetPasswordPage() {
   const [password, setPassword] = useState("");
