@@ -34,7 +34,12 @@ function hasRecoveryHash() {
 function ResetPasswordPage() {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [isRecovery, setIsRecovery] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsRecovery(hasRecoveryHash());
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -57,33 +62,49 @@ function ResetPasswordPage() {
       <div className="relative mx-auto w-full max-w-md">
         <h1 className="text-center text-2xl font-extrabold">Nueva contraseña</h1>
         <p className="mt-1 text-center text-sm text-foreground/70">
-          Escribe tu nueva contraseña para entrar a LennAI.
+          {isRecovery ? "Escribe tu nueva contraseña para entrar a LennAI." : "Este enlace no es válido para restablecer la contraseña."}
         </p>
-        <form
-          onSubmit={handleSubmit}
-          className="mt-6 rounded-3xl border border-border bg-card p-5 shadow-float"
-        >
-          <label className="block">
-            <span className="text-xs font-semibold text-muted-foreground">Contraseña</span>
-            <input
-              type="password"
-              required
-              minLength={6}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Mínimo 6 caracteres"
-              className="mt-1 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
-            />
-          </label>
-          <button
-            type="submit"
-            disabled={busy}
-            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary-gradient px-4 py-3.5 text-sm font-bold text-primary-foreground shadow-soft transition-transform active:scale-95 disabled:opacity-60"
+
+        {isRecovery ? (
+          <form
+            onSubmit={handleSubmit}
+            className="mt-6 rounded-3xl border border-border bg-card p-5 shadow-float"
           >
-            {busy && <Loader2 className="h-4 w-4 animate-spin" />}
-            Guardar contraseña
-          </button>
-        </form>
+            <label className="block">
+              <span className="text-xs font-semibold text-muted-foreground">Contraseña</span>
+              <input
+                type="password"
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Mínimo 6 caracteres"
+                className="mt-1 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-ring"
+              />
+            </label>
+            <button
+              type="submit"
+              disabled={busy}
+              className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary-gradient px-4 py-3.5 text-sm font-bold text-primary-foreground shadow-soft transition-transform active:scale-95 disabled:opacity-60"
+            >
+              {busy && <Loader2 className="h-4 w-4 animate-spin" />}
+              Guardar contraseña
+            </button>
+          </form>
+        ) : (
+          <div className="mt-6 rounded-3xl border border-border bg-card p-5 text-center shadow-float">
+            <p className="text-sm text-muted-foreground">
+              El enlace de recuperación caducó o no es válido. Ve a tu perfil o a la pantalla de inicio de sesión y solicita uno nuevo.
+            </p>
+            <button
+              type="button"
+              onClick={() => navigate({ to: "/auth" })}
+              className="mt-4 inline-flex w-full items-center justify-center rounded-2xl bg-primary-gradient px-4 py-3.5 text-sm font-bold text-primary-foreground shadow-soft transition-transform active:scale-95"
+            >
+              Ir a iniciar sesión
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
